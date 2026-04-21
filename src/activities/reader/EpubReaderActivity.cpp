@@ -21,6 +21,8 @@
 #include "KOReaderCredentialStore.h"
 #include "KOReaderSyncActivity.h"
 #include "MappedInputManager.h"
+#include "ReadestCredentialStore.h"
+#include "ReadestSyncActivity.h"
 #include "QrDisplayActivity.h"
 #include "ReaderUtils.h"
 #include "RecentBooksStore.h"
@@ -411,6 +413,10 @@ void EpubReaderActivity::onReaderMenuConfirm(EpubReaderMenuActivity::MenuAction 
       if (BF_TOKEN_STORE.hasToken() && BookFusionBookIdStore::loadBookId(epub->getPath().c_str()) != 0) {
         startActivityForResult(std::make_unique<BookFusionSyncActivity>(renderer, mappedInput, epub, epub->getPath(),
                                                                         currentSpineIndex, currentPage, totalPages),
+                               applySyncResult);
+      } else if (READEST_STORE.hasCredentials() && !READEST_STORE.getServerUrl().empty()) {
+        startActivityForResult(std::make_unique<ReadestSyncActivity>(renderer, mappedInput, epub, epub->getPath(),
+                                                                     currentSpineIndex, currentPage, totalPages),
                                applySyncResult);
       } else if (KOREADER_STORE.hasCredentials()) {
         startActivityForResult(std::make_unique<KOReaderSyncActivity>(renderer, mappedInput, epub, epub->getPath(),

@@ -20,6 +20,7 @@
 #include "CrossPointState.h"
 #include "KOReaderCredentialStore.h"
 #include "MappedInputManager.h"
+#include "ReadestCredentialStore.h"
 #include "RecentBooksStore.h"
 #include "activities/Activity.h"
 #include "activities/ActivityManager.h"
@@ -259,6 +260,7 @@ void setup() {
   I18N.loadSettings();
   KOREADER_STORE.loadFromFile();
   BF_TOKEN_STORE.loadFromFile();
+  READEST_STORE.loadFromFile();
   UITheme::getInstance().reload();
   ButtonNavigator::setMappedInputManager(mappedInputManager);
 

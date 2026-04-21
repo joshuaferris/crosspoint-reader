@@ -17,6 +17,7 @@ enum class SettingAction {
   CustomiseStatusBar,
   KOReaderSync,
   BookFusionSync,
+  ReadestSync,
   OPDSBrowser,
   Network,
   ClearCache,
