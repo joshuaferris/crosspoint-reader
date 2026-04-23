@@ -3,6 +3,8 @@
 #include <GfxRenderer.h>
 #include <I18n.h>
 
+#include <Logging.h>
+
 #include "MappedInputManager.h"
 #include "ReadestAuthActivity.h"
 #include "ReadestCredentialStore.h"
@@ -54,7 +56,7 @@ void ReadestSyncSettingsActivity::handleSelection() {
                              if (!result.isCancelled) {
                                const auto& kb = std::get<KeyboardResult>(result.data);
                                READEST_STORE.setCredentials(kb.text, READEST_STORE.getPassword());
-                               READEST_STORE.saveToFile();
+                               if (!READEST_STORE.saveToFile()) LOG_ERR("RSS", "Storage.writeFile() failed saving username");
                              }
                            });
   } else if (selectedIndex == 1) {
@@ -65,7 +67,7 @@ void ReadestSyncSettingsActivity::handleSelection() {
           if (!result.isCancelled) {
             const auto& kb = std::get<KeyboardResult>(result.data);
             READEST_STORE.setCredentials(READEST_STORE.getUsername(), kb.text);
-            READEST_STORE.saveToFile();
+            if (!READEST_STORE.saveToFile()) LOG_ERR("RSS", "Storage.writeFile() failed saving password");
           }
         });
   } else if (selectedIndex == 2) {
@@ -79,7 +81,7 @@ void ReadestSyncSettingsActivity::handleSelection() {
                                const std::string urlToSave =
                                    (kb.text == "https://" || kb.text == "http://") ? "" : kb.text;
                                READEST_STORE.setServerUrl(urlToSave);
-                               READEST_STORE.saveToFile();
+                               if (!READEST_STORE.saveToFile()) LOG_ERR("RSS", "Storage.writeFile() failed saving server URL");
                              }
                            });
   } else if (selectedIndex == 3) {
