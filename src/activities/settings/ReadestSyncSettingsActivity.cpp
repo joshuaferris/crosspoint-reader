@@ -4,6 +4,7 @@
 #include <I18n.h>
 #include <Logging.h>
 
+#include <algorithm>
 #include <cctype>
 
 #include "MappedInputManager.h"
@@ -89,7 +90,8 @@ void ReadestSyncSettingsActivity::handleSelection() {
                                  ++start;
                                trimmed.erase(0, start);
                                std::string lower = trimmed;
-                               for (auto& c : lower) c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
+                               std::transform(lower.begin(), lower.end(), lower.begin(),
+                                              [](unsigned char c) { return static_cast<char>(tolower(c)); });
                                const std::string urlToSave = (lower == "http://" || lower == "https://") ? "" : trimmed;
                                READEST_STORE.setServerUrl(urlToSave);
                                if (!READEST_STORE.saveToFile())
